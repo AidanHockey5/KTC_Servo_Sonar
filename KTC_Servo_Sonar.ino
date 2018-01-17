@@ -23,8 +23,11 @@ void loop()
     Serial.println(d);
     delay(5);
   }
-
-  s.write(GetLowest(samples, 180));
+  int lowest = GetLowest(samples, 180);
+  if(lowest == -1)
+    s.write(0);
+  else
+    s.write(lowest);
   delay(5000);
   s.write(0);
   delay(1000);
@@ -32,7 +35,7 @@ void loop()
 
 int GetLowest(unsigned int arr[], int count)
 {
-  int tmp = 65000;
+  int tmp = 10000;
   int lowestPoint = 0;
   for(int i = 0; i<count; i++)
   {
@@ -43,7 +46,10 @@ int GetLowest(unsigned int arr[], int count)
     }
   }
   Serial.print("LOWEST DEGREE: "); Serial.println(lowestPoint);
-  return lowestPoint;
+  if(lowestPoint == 9999)
+    return -1;
+  else
+    return lowestPoint;
 }
 
 unsigned int Distance()
